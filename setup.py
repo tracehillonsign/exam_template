@@ -94,8 +94,6 @@ password =
 name =
 
 [table]
-# Количество столбцов выходной таблицы
-columns = 1
 # Имена колонок в формате: names = column1, column2, ...
 names =
 """
@@ -151,34 +149,33 @@ config = get_config()
 
 
 class App(QWidget):
-    def __init__(self):
-        super().__init__()
+	def __init__(self):
+		super().__init__()
 
-        layout = QHBoxLayout()
-        self.setLayout(layout)
+		layout = QHBoxLayout()
+		self.setLayout(layout)
 
-        self.table = QTableWidget()
-        self.table.setColumnCount(config.table.columns)
-        self.table.setHorizontalHeaderLabels(config.table.names)
-        layout.addWidget(self.table)
+		self.table = QTableWidget()
+		self.table.setColumnCount(config.table.columns)
+		self.table.setHorizontalHeaderLabels(config.table.names)
+		layout.addWidget(self.table)
 
-        self.setup_table()
+		self.setup_table()
 
-    def setup_table(self):
-        self.table.setRowCount(0)
+	def setup_table(self):
+		self.table.setRowCount(0)
+		
+		""" INSERT DATA: Вставьте написанный вами метод. """
+		raw = db.WRITE_DB_METHOD()
 
-        """INSERT DATA: установить нужный метод БД"""
-        raw = db.YOUR_METHOD()
-
-        for row, content in enumerate(raw):
-            self.table.insertRow(row)
-
-            """INSERT DATA: установить нужные столбцы вывода"""
-            self.table.setItem(row, 0, QTableWidgetItem(str(content[0])))
-            self.table.setItem(row, 1, QTableWidgetItem(content[1]))
+		for row, content in enumerate(raw):
+			self.table.insertRow(row)
+			for column, value in enumerate(content):
+				self.table.setItem(row, column, QTableWidgetItem(str(value)))
 '''
 
 UTILS_CONTENT = '''
+"""
 """
 Данный модуль, как и конфигурационный файл, не предназначены для использоваения
         на самом экзамене.
@@ -229,14 +226,17 @@ def get_config() -> Config:
     else:
         names_list = []
 
-    table_setup = TableConf(columns=config.getint("table", "columns"), names=names_list)
+    table_setup = TableConf(columns=len(names_list), names=names_list)
 
     return Config(database=db_setup, table=table_setup)
+
 '''
 
 if __name__ == "__main__":
     print("Начало работы скрипта.")
     return_code = main()
-    print("ВАЖНО: Перед началом использования настройте 'config.ini'. Что бы избежать проблем после написания кода.")
+    print(
+        "ВАЖНО: Перед началом использования настройте 'config.ini'. Что бы избежать проблем после написания кода."
+    )
     print("Конец работы скрипта.")
     sys.exit(return_code)
