@@ -48,6 +48,6 @@ def get_config() -> Config:
     else:
         names_list = []
 
-    table_setup = TableConf(columns=config.getint("table", "columns"), names=names_list)
+    table_setup = TableConf(columns=len(names_list), names=names_list)
 
     return Config(database=db_setup, table=table_setup)
