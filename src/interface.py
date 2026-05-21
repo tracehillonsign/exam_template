@@ -22,10 +22,9 @@ class App(QWidget):
 
     def setup_table(self):
         self.table.setRowCount(0)
-        users = db.get_all_users()
+        raw = db.get_all_users()
 
-        for row, user in enumerate(users):
+        for row, content in enumerate(raw):
             self.table.insertRow(row)
-
-            self.table.setItem(row, 0, QTableWidgetItem(str(user[0])))
-            self.table.setItem(row, 1, QTableWidgetItem(user[1]))
+            for column, value in enumerate(content):
+                self.table.setItem(row, column, QTableWidgetItem(str(value)))
