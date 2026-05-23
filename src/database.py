@@ -5,7 +5,8 @@ from src.utils import get_config
 config = get_config()
 
 SELECT_QUERY = "SELECT id, first_name FROM employees"
-VIEW = "SELECT * FROM shop.view_no_args;"
+VIEW = "SELECT * FROM shop.view_test"
+
 
 class Database:
     def __init__(self):
@@ -29,7 +30,7 @@ class Database:
         with self.connect.cursor() as cursor:
             cursor.execute(SELECT_QUERY)
             return cursor.fetchall()
-        
+
     def view(self):
         """
         Вызов VIEW.
@@ -41,7 +42,7 @@ class Database:
         with self.connect.cursor() as cursor:
             cursor.execute(VIEW)
             return cursor.fetchall()
-        
+
     def procedure_no_args_query(self):
         """
         Вызов хранимой процедуры без аргументов.
